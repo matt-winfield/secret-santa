@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-named-as-default
 import Graph from 'graphology';
-import { Member } from '../types/member';
 import { EdgeAttributes } from '../types/graph';
+import { Member } from '../types/member';
 
 export type Pair = {
     giver: Member;
@@ -18,17 +18,31 @@ export const matchPairs = (
 
     const pairings: Array<Pair> = [];
     let currentMember = startMember;
-    while (pairings.length < graph.order) {
-        const neighbors = graph.filterOutNeighbors(currentMember.id, (key) => {
-            const neighbor = graph.getNodeAttributes(key);
-            return !currentMember.exclusions.includes(neighbor.id);
-        });
+    while (!solutionFound(graph)) {
+        const validNeighborEdges = graph.filterOutEdges(
+            currentMember.id,
+            (edgeKey) => {
+                const neighbor = graph.getNodeAttributes(graph.target(edgeKey));
+                const neighborAlreadyPaired = graph.someInEdge(
+                    neighbor.id,
+                    (neighborInEdgeKey) => {
+                        const edge = graph.getEdgeAttributes(neighborInEdgeKey);
+                        return edge.state === 'path';
+                    },
+                );
+                return (
+                    !currentMember.exclusions.includes(neighbor.id) &&
+                    !neighborAlreadyPaired
+                );
+            },
+        );
 
-        if (neighbors.length === 0) {
+        if (validNeighborEdges.length === 0) {
             return 'unsolved';
         }
 
-        const neighborKey = selectRandom(neighbors).value;
+        const neighborEdgeKey = selectRandom(validNeighborEdges).value;
+        const neighborKey = graph.target(neighborEdgeKey);
         const neighbor = graph.getNodeAttributes(neighborKey);
 
         graph.setEdgeAttribute(currentMember.id, neighbor.id, 'state', 'path');
@@ -38,6 +52,23 @@ export const matchPairs = (
     }
 
     return pairings;
+};
+
+const solutionFound = (graph: Graph<Member, EdgeAttributes>) => {
+    // A solution has been found when every node has an incoming + going edge with state 'path' (i.e. every node is part of the path)
+    return graph.everyNode((nodeKey) => {
+        const hasInput = graph.someInEdge(nodeKey, (edgeKey) => {
+            const edge = graph.getEdgeAttributes(edgeKey);
+            return edge.state === 'path';
+        });
+
+        const hasOutput = graph.someOutEdge(nodeKey, (edgeKey) => {
+            const edge = graph.getEdgeAttributes(edgeKey);
+            return edge.state === 'path';
+        });
+
+        return hasInput && hasOutput;
+    });
 };
 
 const randomInt = (max: number) => {

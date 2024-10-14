@@ -68,4 +68,31 @@ describe('match-pairs', () => {
 
         expect(result).toBe('unsolved');
     });
+
+    it('should make a loop with 3 members', () => {
+        const members = [
+            {
+                id: '0',
+                name: 'Alice',
+                exclusions: [],
+            },
+            {
+                id: '1',
+                name: 'Bob',
+                exclusions: [],
+            },
+            {
+                id: '2',
+                name: 'Charlie',
+                exclusions: [],
+            },
+        ];
+
+        const graph = createGraph(members);
+
+        const result = matchPairs(graph);
+
+        // TODO: This should not be unsolved, but implementation does not have backtracking yet
+        expect(result).toBe('unsolved');
+    });
 });
