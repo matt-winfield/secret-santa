@@ -38,6 +38,36 @@ describe('create-graph', () => {
         expect(graph.getNodeAttributes(3)).toEqual(members[3]);
     });
 
+    it('should be a directed graph without parallel edges', () => {
+        const members = [
+            {
+                id: '0',
+                name: 'Alice',
+                exclusions: [],
+            },
+            {
+                id: '1',
+                name: 'Bob',
+                exclusions: [],
+            },
+            {
+                id: '2',
+                name: 'Charlie',
+                exclusions: [],
+            },
+            {
+                id: '3',
+                name: 'David',
+                exclusions: [],
+            },
+        ];
+
+        const graph = createGraph(members);
+
+        expect(graph.type).toBe('directed');
+        expect(graph.multi).toBe(false);
+    });
+
     it('should add edges between every node in the graph when there are no exclusions', () => {
         const members = [
             {

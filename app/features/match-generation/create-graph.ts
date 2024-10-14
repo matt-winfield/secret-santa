@@ -1,12 +1,12 @@
 import { EdgeAttributes } from '../types/graph';
 import { Member } from '../types/member';
 // eslint-disable-next-line import/no-named-as-default
-import Graph, { MultiDirectedGraph } from 'graphology';
+import Graph, { DirectedGraph } from 'graphology';
 
 export const createGraph = (
     members: Member[],
 ): Graph<Member, EdgeAttributes> => {
-    const graph = new MultiDirectedGraph<Member, EdgeAttributes>();
+    const graph = new DirectedGraph<Member, EdgeAttributes>();
     addNodes(graph, members);
     addEdges(graph, members);
     return graph;
