@@ -6,16 +6,12 @@ import {
     ScrollRestoration,
     useLoaderData,
     useLocation,
-    useMatches,
     useOutlet,
 } from '@remix-run/react';
 import tailwindStylesheetUrl from './styles/tailwind.css?url';
 import fontsStylesheetUrl from './styles/fonts.css?url';
 import { LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
-import { cn } from './utils/misc';
-import { NavMenu } from './features/navMenu';
 import { Footer } from './features/footer';
-import { ThemeSwitch } from './features/themes/themeSwitcher';
 import { getTheme } from './features/themes/themeUtils';
 import { ThemeProvider, useTheme } from './features/themes/themeProvider';
 import { GeneralErrorBoundary } from './components/errorBoundary';
@@ -35,7 +31,10 @@ export const links: LinksFunction = () => {
 export const meta: MetaFunction = () => {
     return [
         { title: 'Secret Santa' },
-        { name: 'description', content: `Generate secret santa pairings, with the ability to prevent certain group members from matching with each other.` },
+        {
+            name: 'description',
+            content: `Generate secret santa pairings, with the ability to prevent certain group members from matching with each other.`,
+        },
     ];
 };
 
@@ -149,37 +148,6 @@ function Layout({ children }: { children: React.ReactNode }) {
     );
 }
 
-const Header = () => {
-    const matches = useMatches();
-    const isOnIndexPage = matches.find((m) => m.id === 'routes/index');
-
-    return (
-        <div className="w-full overflow-hidden">
-            <header
-                // The header uses w-screen instead of w-full so it doesn't resize when the (vertical) scrollbar appears (which would cause a layout shift between pages)
-                // The container has overflow-hidden to prevent the horizontal scrollbar from appearing due to this when the vertical scrollbar is visible
-                className={cn(
-                    isOnIndexPage && 'fixed',
-                    'z-10 flex w-screen items-center py-6',
-                )}
-            >
-                <nav
-                    className={cn(
-                        'flex flex-1 items-center justify-between',
-                        isOnIndexPage && 'container',
-                    )}
-                >
-                    {isOnIndexPage && <ThemeSwitch />}
-                    <div className="mx-3 min-w-0 flex-1">
-                        {!isOnIndexPage && <NavMenu />}
-                    </div>
-                    <div></div>
-                </nav>
-            </header>
-        </div>
-    );
-};
-
 export const loader: LoaderFunction = async ({ request }) => {
     const theme = getTheme(request);
 
@@ -188,10 +156,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function App() {
     const { theme } = useLoaderData<typeof loader>();
-    const matches = useMatches();
     const outlet = useOutlet();
     const location = useLocation();
-    const isOnIndexPage = matches.find((m) => m.id === 'routes/index');
 
     useEffect(() => {
         posthog.capture('$pageview');
@@ -200,10 +166,9 @@ export default function App() {
     return (
         <ThemeProvider initialTheme={theme}>
             <Layout>
-                <div className="flex min-h-full flex-col justify-between">
-                    <Header />
+                <div className="mt-10 flex min-h-full flex-col justify-between">
                     <div className="flex-1 basis-[1px]">{outlet}</div>
-                    {!isOnIndexPage && <Footer />}
+                    <Footer />
                 </div>
             </Layout>
         </ThemeProvider>

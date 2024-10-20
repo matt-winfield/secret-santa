@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-named-as-default
-import Graph from 'graphology';
+import type { Graph } from 'graphology';
 import { EdgeAttributes } from '../types/graph';
 import { Member } from '../types/member';
 

@@ -1,7 +1,8 @@
 import { EdgeAttributes } from '../types/graph';
 import { Member } from '../types/member';
-// eslint-disable-next-line import/no-named-as-default
-import Graph, { DirectedGraph } from 'graphology';
+import type { Graph } from 'graphology';
+import graphology from 'graphology';
+const { DirectedGraph } = graphology;
 
 export const createGraph = (
     members: Member[],
