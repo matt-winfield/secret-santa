@@ -1,0 +1,73 @@
+diff --git a/dist/graphology.d.ts b/dist/graphology.d.ts
+index d2f14ffca954a992db281fa4780e6b17d2e33ab3..e563bc944c9e26f15cd0dc8f685d2a6cae3d764e 100644
+--- a/dist/graphology.d.ts
++++ b/dist/graphology.d.ts
+@@ -1,36 +1,48 @@
+-import {AbstractGraph, Attributes} from 'graphology-types';
++import { AbstractGraph, Attributes } from 'graphology-types';
+ 
+-export default class Graph<
+-  NodeAttributes extends Attributes = Attributes,
+-  EdgeAttributes extends Attributes = Attributes,
+-  GraphAttributes extends Attributes = Attributes
++export class Graph<
++    NodeAttributes extends Attributes = Attributes,
++    EdgeAttributes extends Attributes = Attributes,
++    GraphAttributes extends Attributes = Attributes,
+ > extends AbstractGraph<NodeAttributes, EdgeAttributes, GraphAttributes> {}
+ export class DirectedGraph<
+-  NodeAttributes extends Attributes = Attributes,
+-  EdgeAttributes extends Attributes = Attributes,
+-  GraphAttributes extends Attributes = Attributes
++    NodeAttributes extends Attributes = Attributes,
++    EdgeAttributes extends Attributes = Attributes,
++    GraphAttributes extends Attributes = Attributes,
+ > extends Graph<NodeAttributes, EdgeAttributes, GraphAttributes> {}
+ export class UndirectedGraph<
+-  NodeAttributes extends Attributes = Attributes,
+-  EdgeAttributes extends Attributes = Attributes,
+-  GraphAttributes extends Attributes = Attributes
++    NodeAttributes extends Attributes = Attributes,
++    EdgeAttributes extends Attributes = Attributes,
++    GraphAttributes extends Attributes = Attributes,
+ > extends Graph<NodeAttributes, EdgeAttributes, GraphAttributes> {}
+ export class MultiGraph<
+-  NodeAttributes extends Attributes = Attributes,
+-  EdgeAttributes extends Attributes = Attributes,
+-  GraphAttributes extends Attributes = Attributes
++    NodeAttributes extends Attributes = Attributes,
++    EdgeAttributes extends Attributes = Attributes,
++    GraphAttributes extends Attributes = Attributes,
+ > extends Graph<NodeAttributes, EdgeAttributes, GraphAttributes> {}
+ export class MultiDirectedGraph<
+-  NodeAttributes extends Attributes = Attributes,
+-  EdgeAttributes extends Attributes = Attributes,
+-  GraphAttributes extends Attributes = Attributes
++    NodeAttributes extends Attributes = Attributes,
++    EdgeAttributes extends Attributes = Attributes,
++    GraphAttributes extends Attributes = Attributes,
+ > extends Graph<NodeAttributes, EdgeAttributes, GraphAttributes> {}
+ export class MultiUndirectedGraph<
+-  NodeAttributes extends Attributes = Attributes,
+-  EdgeAttributes extends Attributes = Attributes,
+-  GraphAttributes extends Attributes = Attributes
++    NodeAttributes extends Attributes = Attributes,
++    EdgeAttributes extends Attributes = Attributes,
++    GraphAttributes extends Attributes = Attributes,
+ > extends Graph<NodeAttributes, EdgeAttributes, GraphAttributes> {}
+ 
+ export class InvalidArgumentsGraphError extends Error {}
+ export class NotFoundGraphError extends Error {}
+ export class UsageGraphError extends Error {}
++
++export default {
++    Graph,
++    DirectedGraph,
++    UndirectedGraph,
++    MultiGraph,
++    MultiDirectedGraph,
++    MultiUndirectedGraph,
++    InvalidArgumentsGraphError,
++    NotFoundGraphError,
++    UsageGraphError,
++};

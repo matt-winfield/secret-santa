@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  graphology@0.25.4:
+    hash: fsgw4brbn3frk226drcb2fwvcy
+    path: patches/graphology@0.25.4.patch
+
 dependencies:
   '@mdx-js/react':
     specifier: ^3.0.1
@@ -49,7 +54,7 @@ dependencies:
     version: 11.1.9(react-dom@18.2.0)(react@18.2.0)
   graphology:
     specifier: ^0.25.4
-    version: 0.25.4(graphology-types@0.24.7)
+    version: 0.25.4(patch_hash=fsgw4brbn3frk226drcb2fwvcy)(graphology-types@0.24.7)
   graphology-layout:
     specifier: ^0.6.1
     version: 0.6.1(graphology-types@0.24.7)
@@ -4743,7 +4748,7 @@ packages:
       graphology-types: 0.24.7
     dev: false
 
-  /graphology@0.25.4(graphology-types@0.24.7):
+  /graphology@0.25.4(patch_hash=fsgw4brbn3frk226drcb2fwvcy)(graphology-types@0.24.7):
     resolution: {integrity: sha512-33g0Ol9nkWdD6ulw687viS8YJQBxqG5LWII6FI6nul0pq6iM2t5EKquOTFDbyTblRB3O9I+7KX4xI8u5ffekAQ==}
     peerDependencies:
       graphology-types: '>=0.24.0'
@@ -4752,6 +4757,7 @@ packages:
       graphology-types: 0.24.7
       obliterator: 2.0.4
     dev: false
+    patched: true
 
   /gunzip-maybe@1.4.2:
     resolution: {integrity: sha512-4haO1M4mLO91PW57BMsDFf75UmwoRX0GkdD+Faw+Lr+r/OZrOCS0pIBwOL1xCKQqnQzbNFGgK2V2CpBUPeFNTw==}
