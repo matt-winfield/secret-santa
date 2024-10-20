@@ -6,7 +6,6 @@ import { matchPairs } from '@/features/match-generation/match-pairs';
 import { Member } from '@/features/types/member';
 import type { Graph } from 'graphology';
 import { useState } from 'react';
-import { ClientOnly } from 'remix-utils/client-only';
 
 export default function Index() {
     const [members, setMembers] = useState<Member[]>([]);
@@ -16,14 +15,24 @@ export default function Index() {
     const generatePairs = () => {
         const graph = createGraph(members);
         const result = matchPairs(graph);
-        console.log(graph);
-        console.log(result);
         if (result === 'unsolved') {
             console.error('Could not solve the graph');
             return;
         }
 
         setGraph(graph);
+    };
+
+    const addMember = (name: string) => {
+        setMembers((members) => [
+            ...members,
+            {
+                id: members.length.toString(),
+                name,
+                exclusions: [],
+            },
+        ]);
+        setNewMember('');
     };
 
     return (
@@ -37,22 +46,13 @@ export default function Index() {
                     type="text"
                     value={newMember}
                     onChange={(e) => setNewMember(e.target.value)}
-                />
-                <Button
-                    onClick={() => {
-                        setMembers((members) => [
-                            ...members,
-                            {
-                                id: members.length.toString(),
-                                name: newMember,
-                                exclusions: [],
-                            },
-                        ]);
-                        setNewMember('');
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            addMember(newMember);
+                        }
                     }}
-                >
-                    Add
-                </Button>
+                />
+                <Button onClick={() => addMember(newMember)}>Add</Button>
                 <ul className="mt-4">
                     {members.map((member) => (
                         <Input
@@ -71,7 +71,7 @@ export default function Index() {
                     ))}
                 </ul>
                 <Button onClick={generatePairs}>Generate Pairs</Button>
-                <ClientOnly>{() => <GraphDisplay graph={graph} />}</ClientOnly>
+                <GraphDisplay graph={graph} />
             </div>
         </main>
     );
