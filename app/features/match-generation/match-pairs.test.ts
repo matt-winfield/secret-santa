@@ -1,5 +1,6 @@
+import { Member } from '../types/member';
 import { createGraph } from './create-graph';
-import { matchPairs } from './match-pairs';
+import { MatchPairsResult, matchPairs } from './match-pairs';
 
 const mockMath = Object.create(global.Math);
 mockMath.random = () => 0.5;
@@ -92,7 +93,40 @@ describe('match-pairs', () => {
 
         const result = matchPairs(graph);
 
-        // TODO: This should not be unsolved, but implementation does not have backtracking yet
-        expect(result).toBe('unsolved');
+        assertValidSolution(members, result);
     });
+
+    const assertValidSolution = (
+        members: Array<Member>,
+        pairings: MatchPairsResult,
+    ) => {
+        expect(pairings, 'Pairings should be solved').not.toBe('unsolved');
+        if (pairings === 'unsolved') {
+            return;
+        }
+
+        for (const member of members) {
+            const givingPair = pairings.find((pair) => pair.giver === member);
+            const receivingPair = pairings.find(
+                (pair) => pair.receiver === member,
+            );
+
+            expect(
+                givingPair,
+                `Member ${member.id} (${member.name}) should be giving a gift`,
+            ).toBeDefined();
+            expect(
+                receivingPair,
+                `Member ${member.id} (${member.name}) should be receiving a gift`,
+            ).toBeDefined();
+
+            const isExcluded = member.exclusions.includes(
+                receivingPair!.receiver.id,
+            );
+            expect(
+                isExcluded,
+                `Member ${member.id} (${member.name}) should not be giving a gift to someone in exclusion list`,
+            ).toBe(false);
+        }
+    };
 });

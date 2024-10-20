@@ -1,3 +1,3 @@
 export type EdgeAttributes = {
-    state: 'default' | 'path' | 'jump'
-}
+    state: 'default' | 'path' | 'jump' | 'backtracked';
+};
